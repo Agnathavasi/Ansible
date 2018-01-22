@@ -8,6 +8,10 @@
   
   tasks:
    - name: Directory creation
-     file: path={{ solr_directory }} owner=solr group=solr mode=755 recurse=yes
+     file: path={{ solr_directory }} owner=solr group=solr mode=755 recurse=yes state=directory
    - name: Solr binaries copy
      copy: src={{ path }}/{{ name }} dest={{rpath}} owner=solr group=solr force=yes
+   - name: Installation
+     command: tar -zxf {{path}}/{{name}} -C {{solr_directory}}
+   - name: Permissions changes
+     file: path={{solr_directory}} owner=solr group=solr mode=755 recurse=yes
