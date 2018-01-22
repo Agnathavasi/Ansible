@@ -6,8 +6,10 @@
    rpath: /app
   tasks:
    - name: Copy Binary
-     copy: src={{path}}/{{name}} dest={{rpath}} force=yes
+     copy: src={{path}}/{{name}} dest={{path}} force=yes
    - name: zookeeper installation
-     command: tar -zxf {{rpath}}/{{name}} -C {{rpath}}
+     command: tar -zxf {{path}}/{{name}} -C {{rpath}}
+   - name: Data directory creation
+     file: path={{rpath}}/zookeper-3.4.10/data group=solr owner=solr state=directory
    - name: Permissions change
      file: path={{rpath}} group=solr owner=solr recurse=yes mode=755
