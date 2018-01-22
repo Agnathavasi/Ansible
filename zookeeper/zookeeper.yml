@@ -1,0 +1,13 @@
+---
+- hosts: all
+  vars:
+   path: /opt
+   name: zookeeper-3.4.10.tar.gz
+   rpath: /app
+  tasks:
+   - name: Copy Binary
+     copy: src={{path}}/{{name}} dest={{rpath}} force=yes
+   - name: zookeeper installation
+     command: tar -zxf {{rpath}}/{{name}} -C {{rpath}}
+   - name: Permissions change
+     file: path={{rpath}} group=solr owner=solr recurse=yes mode=755
