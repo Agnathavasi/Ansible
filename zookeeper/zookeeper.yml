@@ -4,12 +4,24 @@
    path: /opt
    name: zookeeper-3.4.10.tar.gz
    rpath: /app
+   zookeeper_config_servers:
+    - IP: 192.168.33.20
+      quorum_port: 2888
+      leader_election_port: 3888
+    - IP: 192.168.33.30
+      quorum_port: 2888
+      leader_election_port: 3888
+
   tasks:
    - name: Copy Binary
      copy: src={{path}}/{{name}} dest={{path}} force=yes
    - name: zookeeper installation
      command: tar -zxf {{path}}/{{name}} -C {{rpath}}
    - name: Data directory creation
-     file: path={{rpath}}/zookeper-3.4.10/data group=solr owner=solr state=directory
+     file: path={{rpath}}/zookeeper-3.4.10/data group=solr owner=solr state=directory mode=0755 recurse=yes
+   - name: myid deployment
+     template: src=../templates/myid.j2 dest={{rpath}}/zookeeper-3.4.10/data/myid
+   - name: config deployment
+     template: src=../templates/config.cfg.j2 dest={{rpath}}/zookeeper-3.4.10/conf/zoo.cfg 
    - name: Permissions change
      file: path={{rpath}} group=solr owner=solr recurse=yes mode=755
