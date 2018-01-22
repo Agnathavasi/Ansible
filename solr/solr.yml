@@ -1,0 +1,13 @@
+---
+- hosts: all
+  vars:
+   solr_directory: /app
+   path: /opt
+   rpath: /opt
+   name: solr-6.4.2.tgz
+  
+  tasks:
+   - name: Directory creation
+     file: path={{ solr_directory }} owner=solr group=solr mode=755 recurse=yes
+   - name: Solr binaries copy
+     copy: src={{ path }}/{{ name }} dest={{rpath}} owner=solr group=solr force=yes
